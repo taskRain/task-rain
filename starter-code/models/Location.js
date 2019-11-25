@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 
 const locationSchema = new Schema(
   {
+    location: { type: { type: String }, coordinates: [Number] }
   },
   {
     timestamps: {
