@@ -1,14 +1,27 @@
 const express = require("express");
 const router = express.Router();
+const User = require("../models/User");
+const Location = require("../models/Location");
+const Task = require("../models/Task");
+const Job = require("../models/Job");
+const ensureLogin = require("connect-ensure-login");
+const checkBoss = require("../passport/roles");
 
-// endpoint: "/jobs/:id" get
-// devuleve un json (res.json) que contiene los trabajos creados
-// por el usuario con el id que ha entrado (el jefe)
+router.get("/jobs/:id", checkBoss, (req, res, next) => {
+  Job.find()
+    .populate("creator")
+    .find({ creator: { _id: req.params.id } })
+    .populate("location")
+    .populate("tasks")
+    .then(payload => res.json(payload));
+});
 
-// endpoint: "/tasks/:id" get
-// devuleve un json (res.json) que contiene la lista de
-// tareas asignadas al usuario con el id que hemos pasado
-// por parámetros
-// le pasaremos la descripción de las tareas y el estado de las mismas
+router.get("/tasks/:id", ensureLogin.ensureLoggedIn('/auth/login'),(req, res, next) => {
+  Task.find()
+    .populate("operator")
+    .find({ operator: { _id: req.params.id } })
+    .populate("location")
+    .then(payload => res.json(payload));
+});
 
 module.exports = router;
