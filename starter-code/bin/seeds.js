@@ -2,7 +2,7 @@
 
 // To execute this seed, run from the root of the project
 // $ node bin/seeds.js
-
+require("dotenv").config();
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
@@ -20,7 +20,7 @@ let jobs = null;
 let taskArray = null;
 
 mongoose
-  .connect("mongodb://localhost/taskrain", { useNewUrlParser: true })
+  .connect(process.env.DB_URL, { useNewUrlParser: true })
   .then(x => {
     console.log(
       `Connected to Mongo! Database name: "${x.connections[0].name}"`
