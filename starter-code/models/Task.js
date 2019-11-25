@@ -3,6 +3,17 @@ const Schema = mongoose.Schema;
 
 const taskSchema = new Schema(
   {
+    name: { type: String, required: true },
+    description: { type: String, required: true },
+    location: { type: Schema.Types.ObjectId, ref: "Location" },
+    materials: { type: String, required: true },
+    operator: { type: Schema.Types.ObjectId, ref: "User" },
+    creator: { type: Schema.Types.ObjectId, ref: "User" },
+    duration: { type: Number, required: true },
+    status: {
+      type: String,
+      enum: ["COMPLETED", "ONGOING"]
+    }
   },
   {
     timestamps: {
