@@ -9,7 +9,6 @@ const User = require("../models/User");
 const Location = require("../models/Location");
 const Task = require("../models/Task");
 const Job = require("../models/Job");
-
 const bcryptSalt = 10;
 
 let myLocation = null;
