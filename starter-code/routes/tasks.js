@@ -20,7 +20,7 @@ const router = express.Router();
 // endpoint: "/confirm/cancel" get
 // redirecciona a "/"
 
-// endpoint: "/confirn/ok" put
+// endpoint: "/confirm/ok" put
 // actualiza el estado de la tarea a completada y te redirige a "/"
 
 module.exports = router;
