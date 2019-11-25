@@ -1,24 +1,24 @@
-const express = require('express');
-const router  = express.Router();
+const express = require("express");
+const router = express.Router();
 
-// endpoint: "/" get 
+// endpoint: "/" get
 // destruye session.job de la sesión en caso de que exista
 // listar todos los trabajos creados por el jefe usando
 // la vista list
 
-// endpoint: "/create/job" get 
+// endpoint: "/create/job" get
 // muestra el formulario de creación de trabajos
 // pintando la vista create-job usando el objeto Job almacenado en la sesión
 // Si no existe la propiedad session.job
 // crea en la sesión un nuevo objeto de la clase Job (en session.job) para mantener el estado
 // del formulario
 
-// endpoint: "/create/job" post 
+// endpoint: "/create/job" post
 // crea un nuevo trabajo en la base de datos con los datos del formulario
-// destruye la información del objeto Job de la sesión 
+// destruye la información del objeto Job de la sesión
 // se redirige a "/" (página principal)
 
-// endpoint: "/create/task" get 
+// endpoint: "/create/task" get
 // pintamos la vista create-task
 
 // endpoint: "/create/task" post
@@ -33,16 +33,16 @@ const router  = express.Router();
 // endpoint: "/update/task" get
 // pintamos la vista update-task con los datos que obtiene del objeto
 // Task que esta dentro del array de Job en la sesión correspondiente
-// Indentificamos la tarea pasando el índice del array de tareas por req.query en lugar de 
+// Indentificamos la tarea pasando el índice del array de tareas por req.query en lugar de
 // por req.param
 
 // endpoint: "/update/task" put
-// actualiza la Task del objeto Job que está en session.job con los nuevos 
+// actualiza la Task del objeto Job que está en session.job con los nuevos
 // datos del formulario y redirige a /create/job
 
 // endpoint: "/update/job/:id" get
-// pinta la vista update-job con los datos obtenidos al interrogar a 
-// la base de datos con el req.param.id 
+// pinta la vista update-job con los datos obtenidos al interrogar a
+// la base de datos con el req.param.id
 
 // endpoint: "/update/job" put
 // actualiza la base de datos con los datos del formulario
@@ -64,7 +64,7 @@ const router  = express.Router();
 // Nos redirige a "/update/job/:id"
 
 // endpoint: "/update/task/:job_id/:task_id" get
-// pinta update-task con los datos de la base de datos para 
+// pinta update-task con los datos de la base de datos para
 // la task que corresponde al task_id que le hemos pasado
 
 // endpoint: "/update/task/:job_id/:task_id" put

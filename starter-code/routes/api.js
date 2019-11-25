@@ -1,11 +1,11 @@
-const express = require('express');
-const router  = express.Router();
+const express = require("express");
+const router = express.Router();
 
-// endpoint: "/jobs/:id" get 
+// endpoint: "/jobs/:id" get
 // devuleve un json (res.json) que contiene los trabajos creados
 // por el usuario con el id que ha entrado (el jefe)
 
-// endpoint: "/tasks/:id" get 
+// endpoint: "/tasks/:id" get
 // devuleve un json (res.json) que contiene la lista de
 // tareas asignadas al usuario con el id que hemos pasado
 // por parámetros
