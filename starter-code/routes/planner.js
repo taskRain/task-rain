@@ -43,15 +43,16 @@ router.get("/create/task", checkBoss, (req, res, next) => {
   );
 });
 
-router.post("/create/task", (req, res, next) => {
+router.post("/create/task", checkBoss, (req, res, next) => {
   let task = { ...new Task(), ...req.body };
   req.session.job.tasks.push(task);
   res.redirect("/create/job");
 });
 
-// endpoint: "/delete/task/" delete
-// recibir por req.query el índice del array de tareas, lo eliminamos del array
-// de la sesión y redirigimos a /create/job
+router.delete("/delete/task", checkBoss, (req, res, next) => {
+  req.session.job.tasks.splice(req.query.idx, 1);
+  res.redirect("/create/job");
+});
 
 // endpoint: "/update/task" get
 // pintamos la vista update-task con los datos que obtiene del objeto
