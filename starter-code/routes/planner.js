@@ -23,14 +23,19 @@ router.get("/", checkBoss, (req, res, next) => {
 });
 
 router.get("/create/job", checkBoss, (req, res, next) => {
-  if(!req.session.hasOwnProperty("job")){req.session.job = new SessionJob()};
-  res.render("../views/planner/create-job",req.session.job);
+  if (!req.session.hasOwnProperty("job")) {
+    req.session.job = new SessionJob();
+  }
+  res.render("../views/planner/create-job", req.session.job);
 });
 
-// endpoint: "/create/job" post
-// crea un nuevo trabajo en la base de datos con los datos del formulario
-// destruye la información del objeto Job de la sesión
-// se redirige a "/" (página principal)
+router.post("/create/job", (req, res, next) => {
+  let job = { ...req.session.job, ...req.body };
+  Job.create(job).then(result => {
+    delete req.session.job;
+    res.redirect("/");
+  });
+});
 
 // endpoint: "/create/task" get
 // pintamos la vista create-task
