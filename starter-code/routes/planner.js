@@ -55,12 +55,17 @@ router.delete("/delete/task", checkBoss, (req, res, next) => {
 });
 
 router.get("/update/task", (req, res, next) => {
-  res.render("../views/planner/update-task.hbs", req.session.job.tasks[req.query.idx]);
+  res.render(
+    "../views/planner/update-task.hbs",
+    req.session.job.tasks[req.query.idx]
+  );
 });
 
-// endpoint: "/update/task" put
-// actualiza la Task del objeto Job que está en session.job con los nuevos
-// datos del formulario y redirige a /create/job
+router.put("/update/task", (req, res, next) => {
+  let task = { ...new Task(), ...req.body.data }; //ojo al crear el objeto que manda axios
+  req.session.job.task[req.body.idx] = task;
+  res.redirect("/create/job");
+});
 
 // endpoint: "/update/job/:id" get
 // pinta la vista update-job con los datos obtenidos al interrogar a
