@@ -1,2 +1,23 @@
-<h1>Soy la lista de trabajos</h1>
-<p>{{joblist}}</p>
+<nav>
+  <a href="create/job">Add new job</a>
+  <button>Will exceed end date</button>
+  <button>Closest end date</button>
+  <a href="/auth/logout">Logout</a>
+</nav>
+<ul>
+  {{#each joblist}}
+  <div>
+    <a href="update/job/{{_id}}">{{description}}</a>
+    <ul>
+      {{#each this.tasks}}
+      <li><a href="update/task/{{_id}}">
+          <div>
+            <h4>{{name}}</h4>
+            <p>{{operator.username}}</p>
+          </div>
+        </a></li>
+      {{/each}}
+    </ul>
+  </div>
+  {{/each}}
+</ul>

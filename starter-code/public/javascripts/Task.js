@@ -1,7 +1,7 @@
 class Task {
 
   constructor() {
-
+    this.arrPos = 0,
     this.name = null,
     this.description = null,
     this.location = null,

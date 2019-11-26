@@ -19,7 +19,7 @@ router.get("/", checkBoss, (req, res, next) => {
       path: "tasks",
       populate: { path: "operator" }
     })
-    .then(joblist => res.render("../views/planner/list.hbs", { joblist }));
+    .then(joblist => res.render("../views/planner/list.hbs", { layout: false, joblist }));
 });
 
 router.get("/create/job", checkBoss, (req, res, next) => {

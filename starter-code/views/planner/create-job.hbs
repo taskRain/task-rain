@@ -1,2 +1,23 @@
-<h1>Soy el creador de trabajos en sesion</h1>
-<p>{{this}}</p>
+<p>{{this.description}}</p>
+<form action="/create/job" method="post">
+  <div class="text-wrapper">
+    <label for="description">Job name: </label>
+    <input type="text" name="description" value="{{this.description}}" placeholder="name">
+    <label for="start-date">Start date: </label>
+    <input type="date" name="start-date" value="{{this.start_date}}">
+    <label for="end-date">End date: </label>
+    <input type="date" name="end-date" value="{{this.end_date}}">
+    <div class="task-container">
+      {{#each this.tasks}}
+      <h3>{{name}}</h3><a href="">{{this}}</a>
+      {{/each}}
+    </div>
+    <a href="/create/task"><button>Add task</button></a>
+  </div>
+  <div class="map-wrapper">
+    <h1>Imagine a map here</h1>
+  </div>
+  <a href="/"><button>Cancel</button></a>
+  <input type="submit" value="Create Job">
+
+</form>
