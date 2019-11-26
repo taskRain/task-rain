@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const ensureLogin = require("connect-ensure-login");
+const checkBoss = require("../passport/roles");
 
 // endpoint: "/" get
 // destruye session.job de la sesión en caso de que exista
