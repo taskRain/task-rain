@@ -54,11 +54,9 @@ router.delete("/delete/task", checkBoss, (req, res, next) => {
   res.redirect("/create/job");
 });
 
-// endpoint: "/update/task" get
-// pintamos la vista update-task con los datos que obtiene del objeto
-// Task que esta dentro del array de Job en la sesión correspondiente
-// Indentificamos la tarea pasando el índice del array de tareas por req.query en lugar de
-// por req.param
+router.get("/update/task", (req, res, next) => {
+  res.render("../views/planner/update-task.hbs", req.session.job.tasks[req.query.idx]);
+});
 
 // endpoint: "/update/task" put
 // actualiza la Task del objeto Job que está en session.job con los nuevos
