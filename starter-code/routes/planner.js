@@ -37,8 +37,11 @@ router.post("/create/job", (req, res, next) => {
   });
 });
 
-// endpoint: "/create/task" get
-// pintamos la vista create-task
+router.get("/create/task", checkBoss, (req, res, next) => {
+  User.find().then(users =>
+    res.render("../views/planner/create-task", { users })
+  );
+});
 
 // endpoint: "/create/task" post
 // crea un nuevo objeto de la clase Task y se lo coloca al objeto Job
