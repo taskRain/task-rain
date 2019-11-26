@@ -43,10 +43,11 @@ router.get("/create/task", checkBoss, (req, res, next) => {
   );
 });
 
-// endpoint: "/create/task" post
-// crea un nuevo objeto de la clase Task y se lo coloca al objeto Job
-// que está en session.job
-// Hecho esto hace un redirect a /create/job
+router.post("/create/task", (req, res, next) => {
+  let task = { ...new Task(), ...req.body };
+  req.session.job.tasks.push(task);
+  res.redirect("/create/job");
+});
 
 // endpoint: "/delete/task/" delete
 // recibir por req.query el índice del array de tareas, lo eliminamos del array
