@@ -16,12 +16,16 @@ router.get("/jobs/:id", checkBoss, (req, res, next) => {
     .then(payload => res.json(payload));
 });
 
-router.get("/tasks/:id", ensureLogin.ensureLoggedIn('/auth/login'),(req, res, next) => {
-  Task.find()
-    .populate("operator")
-    .find({ operator: { _id: req.params.id } })
-    .populate("location")
-    .then(payload => res.json(payload));
-});
+router.get(
+  "/tasks/:id",
+  ensureLogin.ensureLoggedIn("/auth/login"),
+  (req, res, next) => {
+    Task.find()
+      .populate("operator")
+      .find({ operator: { _id: req.params.id } })
+      .populate("location")
+      .then(payload => res.json(payload));
+  }
+);
 
 module.exports = router;

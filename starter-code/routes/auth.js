@@ -2,7 +2,7 @@ const express = require("express");
 const passport = require("passport");
 const router = express.Router();
 const User = require("../models/User");
-const checkBoss = require("../passport/roles")
+const checkBoss = require("../passport/roles");
 
 // Bcrypt to encrypt passwords
 const bcrypt = require("bcrypt");
@@ -15,7 +15,7 @@ router.get("/login", (req, res, next) => {
 router.post(
   "/login",
   passport.authenticate("local", {
-    successRedirect: "/",
+    successRedirect: "/planner/",
     failureRedirect: "/auth/login",
     failureFlash: true,
     passReqToCallback: true

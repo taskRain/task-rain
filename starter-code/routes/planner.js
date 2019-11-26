@@ -1,12 +1,23 @@
 const express = require("express");
 const router = express.Router();
+const User = require("../models/User");
+const Location = require("../models/Location");
+const Task = require("../models/Task");
+const Job = require("../models/Job");
 const ensureLogin = require("connect-ensure-login");
 const checkBoss = require("../passport/roles");
 
-// endpoint: "/" get
-// destruye session.job de la sesión en caso de que exista
-// listar todos los trabajos creados por el jefe usando
-// la vista list
+router.get("/", checkBoss, (req, res, next) => {
+  Job.find()
+    .populate("creator")
+    .find({ creator: { _id: req.user._id } })
+    .populate("tasks")
+    .populate({
+      path: "tasks",
+      populate: { path: "operator" }
+    })
+    .then(joblist => res.render("../views/planner/list.hbs", { joblist }));
+});
 
 // endpoint: "/create/job" get
 // muestra el formulario de creación de trabajos
