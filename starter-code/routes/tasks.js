@@ -1,13 +1,32 @@
 const express = require("express");
 const router = express.Router();
+const Tasks = require('../models/Task');
 const ensureLogin = require("connect-ensure-login");
 const checkBoss = require("../passport/roles");
 
 // endpoint: "/" get
 // listar las tareas asignadas al usuario en la vista list
+router.get('/', (req, res, next) => {
+  Tasks.find()
+    .then((allTheTasks) => {
+      res.render('tasks/list',{"tasks": allTheTasks})
+    })
+    .catch(error => {
+      console.log(error);
+    });
+})
 
 // endpoint: "/detail/:id" get
 // muestra detalle de la tarea en la vista detail
+router.get('/detail/:id', (req, res, next) => {
+  Tasks.findById(req.params.id)
+  .then((task) => {
+    res.render('tasks/detail',{"task": task})
+  })
+  .catch(error => {
+    console.log(error);
+  });
+})
 
 // endpoint: "/location/:id" get
 // mostrar mapa con localización. Pintará en la vista map

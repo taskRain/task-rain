@@ -1,0 +1,9 @@
+<h1>Lista de tareas</h1>
+
+{{#each tasks}}
+
+<p><a href="/tasks/detail/{{_id}}">{{name}}</a></p>
+
+{{/each}}
+
+{{!-- http://localhost:3000/tasks/detail/{{_id}} --}}
