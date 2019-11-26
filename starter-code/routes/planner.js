@@ -6,8 +6,11 @@ const Task = require("../models/Task");
 const Job = require("../models/Job");
 const ensureLogin = require("connect-ensure-login");
 const checkBoss = require("../passport/roles");
+const SessionJob = require("../public/javascripts/Job");
+const SessionTask = require("../public/javascripts/Task");
 
 router.get("/", checkBoss, (req, res, next) => {
+  delete req.session.job;
   Job.find()
     .populate("creator")
     .find({ creator: { _id: req.user._id } })
@@ -19,12 +22,10 @@ router.get("/", checkBoss, (req, res, next) => {
     .then(joblist => res.render("../views/planner/list.hbs", { joblist }));
 });
 
-// endpoint: "/create/job" get
-// muestra el formulario de creación de trabajos
-// pintando la vista create-job usando el objeto Job almacenado en la sesión
-// Si no existe la propiedad session.job
-// crea en la sesión un nuevo objeto de la clase Job (en session.job) para mantener el estado
-// del formulario
+router.get("/create/job", checkBoss, (req, res, next) => {
+  if(!req.session.hasOwnProperty("job")){req.session.job = new SessionJob()};
+  res.render("../views/planner/create-job",req.session.job);
+});
 
 // endpoint: "/create/job" post
 // crea un nuevo trabajo en la base de datos con los datos del formulario
