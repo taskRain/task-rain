@@ -48,7 +48,7 @@ router.get("/create/task", checkBoss, (req, res, next) => {
 });
 
 router.post("/create/task", checkBoss, (req, res, next) => {
-  let newTask = new Task();
+  let newTask = new SessionTask();
   newTask.creator = req.session.job.creator;
   let taskArrLen = req.session.job.tasks.length;
   if (taskArrLen) {
@@ -56,7 +56,7 @@ router.post("/create/task", checkBoss, (req, res, next) => {
   }
   let task = { ...newTask, ...req.body };
   req.session.job.tasks.push(task);
-  res.redirect("/create/job");
+  res.redirect("/planner/create/job");
 });
 
 router.delete("/delete/task", checkBoss, (req, res, next) => {
@@ -72,7 +72,7 @@ router.get("/update/task", (req, res, next) => {
 });
 
 router.put("/update/task", (req, res, next) => {
-  let task = { ...new Task(), ...req.body }; //ojo al crear el objeto que manda axios
+  let task = { ...new SessionTask(), ...req.body }; //ojo al crear el objeto que manda axios
   req.session.job.task[req.body.idx] = task;
   res.redirect("/create/job");
 });

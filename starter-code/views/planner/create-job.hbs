@@ -1,5 +1,7 @@
+
+
 <p>{{this.description}}</p>
-<form action="/create/job" method="post">
+<form action="/planner/create/job" method="post">
   <div class="text-wrapper">
     <label for="description">Job name: </label>
     <input type="text" name="description" value="{{this.description}}" placeholder="name">
@@ -9,10 +11,10 @@
     <input type="date" name="end-date" value="{{this.end_date}}">
     <div class="task-container">
       {{#each this.tasks}}
-      <h3>{{name}}</h3><a href="update/task">{{this}}</a><a href="delete/task">{{this}}</a>
+      <h3>{{name}}</h3><a href="/planner/update/task/?idx={{arrPoss}}">Update task</a><a href="/planner/delete/task?idx={{arrPoss}}">Delete task</a>
       {{/each}}
     </div>
-    <a href="create/task">Add task</a>
+    <a href="/planner/create/task">Add task</a>
   </div>
   <div class="map-wrapper">
     <h1>Imagine a map here</h1>
