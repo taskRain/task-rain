@@ -89,13 +89,14 @@ router.get("/confirmCancel", ensureLogin.ensureLoggedIn("/auth/login"), (req, re
 // endpoint: "/confirm/ok/:id" put
 // actualiza el estado de la tarea a completada y te redirige a "/"
 router.put(
-  "/confirm/ok/:id",
+  "/confirm/ok",
   ensureLogin.ensureLoggedIn("/auth/login"),
   (req, res, next) => {
-    Tasks.finkByIdAndUpdate(req.params, {
+    Tasks.findByIdAndUpdate(req.body.id, {
       status: "COMPLETED"
-    }).then(() => {
-      res.redirect("task/");
+    }).then((response) => {
+      //res.redirect("task/");
+      res.json(response)
     });
   }
 );
