@@ -10,7 +10,6 @@ class Task {
     this.creator = null,
     this.duration = null,
     this.status = "ONGOING"
-
   }
 
 }

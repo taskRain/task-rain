@@ -80,6 +80,11 @@ router.put("/update/task", (req, res, next) => {
 // endpoint: "/update/job/:id" get
 // pinta la vista update-job con los datos obtenidos al interrogar a
 // la base de datos con el req.param.id
+router.get("/update/job/:id", (req, res, next) => {
+  Job.findById(req.params.id)
+  .then(job => {
+  res.render("../views/planner/update-job", {job: job})})
+});
 
 // endpoint: "/update/job" put
 // actualiza la base de datos con los datos del formulario
