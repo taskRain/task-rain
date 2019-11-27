@@ -15,12 +15,20 @@ router.get("/login", (req, res, next) => {
 router.post(
   "/login",
   passport.authenticate("local", {
-    successRedirect: "/planner/",
+    successRedirect: "/auth/split",      
     failureRedirect: "/auth/login",
     failureFlash: true,
     passReqToCallback: true
   })
 );
+
+router.get("/split", (req, res, next) => {
+  if(req.user.role === "BOSS"){
+    res.redirect("/planner/");
+  }else{
+    res.redirect("/tasks/");
+  }
+})
 
 router.get("/logout", (req, res) => {
   req.logout();
