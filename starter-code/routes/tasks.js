@@ -12,6 +12,11 @@ router.get("/", ensureLogin.ensureLoggedIn("/auth/login"), (req, res, next) => {
     .populate("operator")
     .find({ operator: { _id: req.user._id } })
     .then(allTheTasks => {
+      allTheTasks.forEach((task) => {
+        if(task.status === "COMPLETED"){
+          task.flag = true;
+        }
+      })
       res.render("tasks/list", { tasks: allTheTasks });
     })
     .catch(error => {
@@ -68,6 +73,7 @@ router.put(
   }
 );
 
+
 // endpoint: "/confirm/:id" get
 // pinta una vista con el botón de confirmación y otro de cancelar
 router.get(
@@ -92,7 +98,7 @@ router.put(
   "/confirm/ok",
   ensureLogin.ensureLoggedIn("/auth/login"),
   (req, res, next) => {
-    Tasks.findByIdAndUpdate(req.body.id, {
+    Tasks.findByIdAndUpdate(req.body._id, {
       status: "COMPLETED"
     }).then((response) => {
       //res.redirect("task/");

@@ -3,6 +3,9 @@
 {{#each tasks}}
 
 <p><a href="/tasks/detail/{{_id}}">{{name}}</a>
-<a href="/tasks/confirm/{{_id}}">Finished</a></p>
+{{#unless flag}}
+<a href="/tasks/confirm/{{_id}}">Finished</a>
+{{/unless}}
+</p>
 
 {{/each}}
