@@ -29,16 +29,26 @@ router.get("/create/job", checkBoss, (req, res, next) => {
     req.session.job = new SessionJob();
     req.session.job.creator = req.user._id;
   }
+  console.log(req.session.job)
   res.render("../views/planner/create-job", req.session.job);
 });
 
 router.post("/create/job", (req, res, next) => {
   let job = { ...req.session.job, ...req.body };
   job.tasks.forEach(task=>task.location = job.location);
-  Job.create(job).then(result => {
-    delete req.session.job;
-    res.redirect("/");
+  let taskArr = [...job.tasks];
+  let taskIdArr = []
+  Task.create(taskArr).then(result => {
+    taskIdArr = result.map(task=>task._id);
+    delete job.tasks;
+    return Job.create(job);
+  }).then(job => {
+    return Job.update({_id : job._id},{$push: { tasks: { taskIdArr }}})
+  }).then(()=>{
+      delete req.session.job;
+      res.redirect("/");
   });
+  
 });
 
 router.get("/create/task", checkBoss, (req, res, next) => {

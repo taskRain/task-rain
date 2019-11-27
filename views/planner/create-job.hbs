@@ -1,16 +1,16 @@
 
 
-<p>{{this.description}}</p>
-<form action="/planner/create/job" method="post">
+<p>{{description}}</p>
+<form action="create/job" method="post">
   <div class="text-wrapper">
     <label for="description">Job name: </label>
-    <input type="text" name="description" value="{{this.description}}" placeholder="name">
+    <input type="text" name="description" value="{{description}}" placeholder="name">
     <label for="start-date">Start date: </label>
-    <input type="date" name="start-date" value="{{this.start_date}}">
+    <input type="date" name="start-date" value="{{start_date}}">
     <label for="end-date">End date: </label>
-    <input type="date" name="end-date" value="{{this.end_date}}">
+    <input type="date" name="end-date" value="{{end_date}}">
     <div class="task-container">
-      {{#each this.tasks}}
+      {{#each tasks}}
       <h3>{{name}}</h3><a href="/planner/update/task/?idx={{arrPoss}}">Update task</a><a href="/planner/delete/task?idx={{arrPoss}}">Delete task</a>
       {{/each}}
     </div>
@@ -21,5 +21,4 @@
   </div>
   <a href="/"><button>Cancel</button></a>
   <input type="submit" value="Create Job">
-
 </form>
