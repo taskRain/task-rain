@@ -6,8 +6,6 @@ const Task = require("../models/Task");
 const Job = require("../models/Job");
 const ensureLogin = require("connect-ensure-login");
 const checkBoss = require("../passport/roles");
-const SessionJob = require("../public/javascripts/Job");
-const SessionTask = require("../public/javascripts/Task");
 
 router.get("/", checkBoss, (req, res, next) => {
   delete req.session.job;
@@ -25,13 +23,24 @@ router.get("/", checkBoss, (req, res, next) => {
 });
 
 router.get("/create/job", checkBoss, (req, res, next) => {
-  if (!req.session.hasOwnProperty("job")) {
-    req.session.job = new SessionJob();
-    req.session.job.creator = req.user._id;
-  }
-  console.log(req.session.job)
-  res.render("../views/planner/create-job", req.session.job);
+  Job.create({
+    creator: req.user._id,
+    description: "dummy text",
+    start_date: new Date(),
+    end_date: new Date()
+  }).then(createdJob => {
+    res.redirect("/planner/create/job/" + createdJob._id)
+  })
+
 });
+
+router.get("/create/job/:id", (req, res) => {
+  User.find().then(users =>{
+    Job.findById(req.params.id).then(job => {
+      res.render("../views/planner/create-job", {job, users});
+    })
+  })
+})
 
 router.post("/create/job", (req, res, next) => {
   let job = { ...req.session.job, ...req.body };

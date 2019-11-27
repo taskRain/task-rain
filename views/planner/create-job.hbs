@@ -1,24 +1,63 @@
-
-
-<p>{{description}}</p>
-<form action="create/job" method="post">
-  <div class="text-wrapper">
-    <label for="description">Job name: </label>
-    <input type="text" name="description" value="{{description}}" placeholder="name">
-    <label for="start-date">Start date: </label>
-    <input type="date" name="start-date" value="{{start_date}}">
-    <label for="end-date">End date: </label>
-    <input type="date" name="end-date" value="{{end_date}}">
+<aside class="task-create">
+  <form action="/planner/create/task" method="post">
+    <div class="text-wrapper task">
+      <label for="task-name">Task name: </label>
+      <input type="text" id="task-name" name="name" placeholder="Name">
+      <label for="task-description">Task brief description: </label>
+      <textarea id="task-description" name="description" placeholder="Enter a short description ..." cols="40"
+        rows="7"></textarea>
+      <label for="task-materials">Required material: </label>
+      <textarea cols="40" rows="5" id="task-materials" name="materials" placeholder="Materials needed"></textarea>
+      <div class="task-low">
+        <div>
+          <label for="task-duration">Estimated hours: </label>
+          <input type="number" id="task-duration" name="duration">
+        </div>
+        <div>
+          <label for="task-operator">Operador asignado: </label>
+          <select id="task-operator" name="operator">
+            {{#each users}}
+            <option value="{{_id}}">{{username}}</option>
+            {{/each}}
+          </select>
+        </div>
+      </div>
+    </div>
+    <a href="/planner/create/job"><button>Cancel</button></a>
+    <input type="submit" value="Create Task">
+  </form>
+</aside>
+<section class="job-create">
+  <form action="create/job" method="post">
+    <div class="text-wrapper">
+      <div class="field top">
+        <label>Job name: </label>
+        <input type="text" name="description" placeholder="name">
+      </div>
+      <div class="field left">
+        <div>
+          <label for="">Start date:</label>
+          <input type="date" name="start-date">
+        </div>
+        <div>
+          <label for="">End date:</label>
+          <input type="date" id="end-date" name="end-date">
+        </div>
+      </div>
+    </div>
     <div class="task-container">
       {{#each tasks}}
-      <h3>{{name}}</h3><a href="/planner/update/task/?idx={{arrPoss}}">Update task</a><a href="/planner/delete/task?idx={{arrPoss}}">Delete task</a>
+      <h3>{{name}}</h3><a href="axios show update form">Update task</a><a href="axios delete">Delete task</a>
       {{/each}}
+      <a href="axios show create form">Add task</a>
     </div>
-    <a href="/planner/create/task">Add task</a>
-  </div>
+    <div class="form-buttons">
+      <a href="/"><button>Cancel</button></a>
+      <input type="submit" value="Create Job">
+    </div>
+  </form>
   <div class="map-wrapper">
     <h1>Imagine a map here</h1>
   </div>
-  <a href="/"><button>Cancel</button></a>
-  <input type="submit" value="Create Job">
-</form>
+</section>
+<script src="/javascripts/planner-create.js"></script>
