@@ -1,2 +1,19 @@
-<h1>Here you create a new task in Session</h1>
-{{users}}
+<form action="/create/task" method="post">
+  <div class="text-wrapper">
+    <label for="name">Task name: </label>
+    <input type="text" name="name" placeholder="Name">
+    <label for="description">Task brief description: </label>
+    <input type="text" name="description" placeholder="Enter a short description ...">
+    <label for="materials">Required material: </label>
+    <input type="text" name="materials" placeholder="Material needed">
+    <label for="duration">Estimated hours to complete: </label>
+    <input type="number" name="duration">
+    <select name="operator">
+      {{#each users}}
+      <option value="{{_id}}">{{username}}</option>
+      {{/each}}
+    </select>
+  </div>
+  <a href="/"><button>Cancel</button></a>
+  <input type="submit" value="Create Task">
+</form>

@@ -19,18 +19,22 @@ router.get("/", checkBoss, (req, res, next) => {
       path: "tasks",
       populate: { path: "operator" }
     })
-    .then(joblist => res.render("../views/planner/list.hbs", { layout: false, joblist }));
+    .then(joblist =>
+      res.render("../views/planner/list.hbs", { layout: false, joblist })
+    );
 });
 
 router.get("/create/job", checkBoss, (req, res, next) => {
   if (!req.session.hasOwnProperty("job")) {
     req.session.job = new SessionJob();
+    req.session.job.creator = req.user._id;
   }
   res.render("../views/planner/create-job", req.session.job);
 });
 
 router.post("/create/job", (req, res, next) => {
   let job = { ...req.session.job, ...req.body };
+  job.tasks.forEach(task=>task.location = job.location);
   Job.create(job).then(result => {
     delete req.session.job;
     res.redirect("/");
@@ -44,7 +48,13 @@ router.get("/create/task", checkBoss, (req, res, next) => {
 });
 
 router.post("/create/task", checkBoss, (req, res, next) => {
-  let task = { ...new Task(), ...req.body };
+  let newTask = new Task();
+  newTask.creator = req.session.job.creator;
+  let taskArrLen = req.session.job.tasks.length;
+  if (taskArrLen) {
+    newTask.arrPos = req.session.job.tasks[taskArrLen - 1].arrPos + 1;
+  }
+  let task = { ...newTask, ...req.body };
   req.session.job.tasks.push(task);
   res.redirect("/create/job");
 });
@@ -62,7 +72,7 @@ router.get("/update/task", (req, res, next) => {
 });
 
 router.put("/update/task", (req, res, next) => {
-  let task = { ...new Task(), ...req.body.data }; //ojo al crear el objeto que manda axios
+  let task = { ...new Task(), ...req.body }; //ojo al crear el objeto que manda axios
   req.session.job.task[req.body.idx] = task;
   res.redirect("/create/job");
 });
