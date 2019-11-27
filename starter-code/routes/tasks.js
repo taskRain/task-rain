@@ -40,14 +40,12 @@ router.get(
 // endpoint: "/location/:id" get
 // mostrar mapa con localización. Pintará en la vista map
 router.get(
-  "/location/:id",
+  "/location/:locId/:taskId",
   ensureLogin.ensureLoggedIn("/auth/login"),
   (req, res, next) => {
-    Locations.findById(req.params.id)
-    .then((location) => {
-      console.log(location);
-      res.render("tasks/map", {location: location})
-    })
+    Locations.findById(req.params.locId).then(location => {
+      res.render("tasks/map", { location: location, task: req.params.taskId });
+    });
   }
 );
 
@@ -59,17 +57,47 @@ router.put(
   "/location",
   ensureLogin.ensureLoggedIn("/auth/login"),
   (req, res, next) => {
-    res.render("tasks/map");
+    Locations.findByIdAndUpdate(req.body._id, {
+      location: {
+        type: "Point",
+        coordinates: [+req.body.lng, +req.body.lat]
+      }
+    }).then(() => {
+      res.redirect(`/tasks/detail/${req.body.taskId}`);
+    });
   }
 );
 
 // endpoint: "/confirm/:id" get
 // pinta una vista con el botón de confirmación y otro de cancelar
+router.get(
+  "/confirm/:id",
+  ensureLogin.ensureLoggedIn("/auth/login"),
+  (req, res, next) => {
+    console.log(req.params.id);
+    res.render("tasks/confirm", { taskId: req.params.id });
+  }
+);
 
 // endpoint: "/confirm/cancel" get
 // redirecciona a "/"
+router.get("/confirmCancel", ensureLogin.ensureLoggedIn("/auth/login"), (req, res, next) => {
+  console.log('cancelled');
+  res.redirect("/tasks/");
+});
 
-// endpoint: "/confirm/ok" put
+// endpoint: "/confirm/ok/:id" put
 // actualiza el estado de la tarea a completada y te redirige a "/"
+router.put(
+  "/confirm/ok/:id",
+  ensureLogin.ensureLoggedIn("/auth/login"),
+  (req, res, next) => {
+    Tasks.finkByIdAndUpdate(req.params, {
+      status: "COMPLETED"
+    }).then(() => {
+      res.redirect("task/");
+    });
+  }
+);
 
 module.exports = router;
