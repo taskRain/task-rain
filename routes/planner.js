@@ -42,24 +42,6 @@ router.get("/create/job/:id", (req, res) => {
   })
 })
 
-router.post("/create/job", (req, res, next) => {
-  let job = { ...req.session.job, ...req.body };
-  job.tasks.forEach(task=>task.location = job.location);
-  let taskArr = [...job.tasks];
-  let taskIdArr = []
-  Task.create(taskArr).then(result => {
-    taskIdArr = result.map(task=>task._id);
-    delete job.tasks;
-    return Job.create(job);
-  }).then(job => {
-    return Job.update({_id : job._id},{$push: { tasks: { taskIdArr }}})
-  }).then(()=>{
-      delete req.session.job;
-      res.redirect("/");
-  });
-  
-});
-
 router.get("/create/task", checkBoss, (req, res, next) => {
   User.find().then(users =>
     res.render("../views/planner/create-task", { users })
@@ -103,6 +85,10 @@ router.put("/update/task", (req, res, next) => {
 // endpoint: "/update/job" put
 // actualiza la base de datos con los datos del formulario
 // después te redirecciona a "/"
+
+router.put("/update/job",(req, res, next) => {
+  res.json(req.body);
+})
 
 // endpoint: "/delete/job" delete
 // elimina todas las tasks que pertenecen a este trabajo
