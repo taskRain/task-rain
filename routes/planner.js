@@ -76,54 +76,32 @@ router.get("/update/task", (req, res, next) => {
 });
 
 router.put("/update/task", (req, res, next) => {
-  let task = { ...new SessionTask(), ...req.body }; //ojo al crear el objeto que manda axios
-  req.session.job.task[req.body.idx] = task;
-  res.redirect("/create/job");
+  Task.findByIdAndUpdate(req.body.taskId,{
+      name: req.body.name,
+      description: req.body.description,
+      materials: req.body.materials,
+      duration: req.body.duration,
+      ocation: req.body.location,
+      operator: req.body.operator
+  }).then(result => res.json(result))
 });
 
-// endpoint: "/update/job/:id" get
-// pinta la vista update-job con los datos obtenidos al interrogar a
-// la base de datos con el req.param.id
 router.get("/update/job/:id", (req, res, next) => {
   Job.findById(req.params.id).then(job => {
     res.render("../views/planner/update-job", { job: job });
   });
 });
 
-// endpoint: "/update/job" put
-// actualiza la base de datos con los datos del formulario
-// después te redirecciona a "/"
-
 router.put("/update/job", (req, res, next) => {
   res.json(req.body);
 });
 
-// endpoint: "/delete/job" delete
-// elimina todas las tasks que pertenecen a este trabajo
-// eliminamos la location
-// eliminamos el trabajo
-// redireccionamos a "/"
-
-// endpoint: "/create/task/:id" get
-// pinta la vista create-task utilizando información de la base de datos
-// y req.param.id. El id es el del trabajo al que va a pertenecer esta tarea
-
-// endpoint: "/create/task/:id" post
-// El id es el del trabajo al cual le vamos a añadir una nueva tarea a
-// partir del formulario.
-// Nos redirige a "/update/job/:id"
-
-// endpoint: "/update/task/:job_id/:task_id" get
-// pinta update-task con los datos de la base de datos para
-// la task que corresponde al task_id que le hemos pasado
-
-// endpoint: "/update/task/:job_id/:task_id" put
-// actualiza en la base de datos la tarea correspodiente al task_id
-// de la tarea
-// redirigimos a /update/job/:id pasándole el job_id (req.param.job_id)
-
-// endpoint: "/delete/task/:job_id/:task_id" delete
-// elimina de la base de datos la tarea que tenga task_id
-// redirigimos a /update/job/:id pasándole el job_id (req.param.job_id)
+router.get("/task/", (req, res, next) => {
+  Task.findById(req.query.id)
+    .populate("location")
+    .populate("operator")
+    .populate("creator")
+    .then(task => res.json(task));
+});
 
 module.exports = router;

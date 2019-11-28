@@ -17,6 +17,12 @@ function clearForm(formTupla) {
   });
 }
 
+function autoFillForm(formTupla, payload) {
+  formTupla.forEach(field => {
+    document.querySelector(field[1]).value = payload[field[0]];
+  });
+}
+
 function renderTaskList(id) {
   axios({
     method: "get",
@@ -35,53 +41,93 @@ function renderTaskList(id) {
       deleteDOMEL.innerText = "Delete Task";
       updateDOMEL.className = "update-task";
       deleteDOMEL.className = "delete-task";
-      updateDOMEL.onclick = (e) => {
+      updateDOMEL.addEventListener("click", e => {
         e && e.preventDefault();
-        //TODO cambiar aside a modo update
-      }
-      deleteDOMEL.onclick = (e) => {
+
+        axios({
+          method: "get",
+          url: "/planner/task",
+          params: {
+            id: task._id
+          },
+          config: { headers: { "Content-Type": "multipart/form-data" } }
+        }).then(payload => {
+          autoFillForm(taskFormGroup, payload.data);
+          document.querySelector(`#task-operator`).value =
+            payload.data.operator._id;
+          renderTaskList(window.jobId);
+        });
+
+        document.querySelector(".task-create").classList.toggle("hide");
+
+        let asideButton = document.querySelector(
+          '.task-create input[type="submit"]'
+        );
+
+        asideButton.value = `Update Task`;
+        asideButton.removeEventListener("click");
+        asideButton.addEventListener("click", e => {
+          e && e.preventDefault();
+          document.querySelector(".task-create").classList.toggle("hide");
+
+          let payload = {
+            location: jobLocationId,
+            jobId: window.jobId,
+            taskId: task._id
+          };
+          taskFormGroup.forEach(field => {
+            payload[field[0]] = document.querySelector(field[1]).value;
+          });
+
+          axios({
+            method: "put",
+            url: "/planner/update/task",
+            data: payload,
+            config: { headers: { "Content-Type": "multipart/form-data" } }
+          }).then(() => {
+            renderTaskList(window.jobId);
+          });
+        });
+      });
+      deleteDOMEL.addEventListener("click", e => {
         e && e.preventDefault();
         axios({
           method: "delete",
           url: `/planner/delete/task/`,
           data: {
-            taskId : task._id,
-            jobId : window.jobId
+            taskId: task._id,
+            jobId: window.jobId
           },
           config: { headers: { "Content-Type": "multipart/form-data" } }
         }).then(() => {
           renderTaskList(window.jobId);
         });
-      }
-      //taskDOMEL.appendChild(updateDOMEL);
+      });
+      taskDOMEL.appendChild(updateDOMEL);
       taskDOMEL.appendChild(deleteDOMEL);
       taskList.appendChild(taskDOMEL);
     });
   });
 }
 
-document.getElementById("new-task").onclick = e => {
+document.getElementById("new-task").addEventListener("click", e => {
   e && e.preventDefault();
   clearForm(taskFormGroup);
   document.querySelector(".task-create").classList.toggle("hide");
-};
+  let asideButton = document.querySelector('.task-create input[type="submit"]');
+  asideButton.value = `Create Task`;
+  asideButton.removeEventListener("click");
+  asideButton.addEventListener("click",  );
+});
 
-document.querySelector('.task-create input[type="submit"]').onclick = e => {
-  e && e.preventDefault();
-  document.querySelector(".task-create").classList.toggle("hide");
-
-  let payload = { location: jobLocationId, jobId: window.jobId };
-
-  taskFormGroup.forEach(field => {
-    payload[field[0]] = document.querySelector(field[1]).value;
-  });
-
-  axios({
-    method: "post",
-    url: "/planner/create/task",
-    data: payload,
-    config: { headers: { "Content-Type": "multipart/form-data" } }
-  }).then(() => {
-    renderTaskList(window.jobId);
-  });
-};
+function getButtonBehaviour(behaviour){
+  switch (behaviour) {
+    case "CREATE_TASK":
+      //here create task event
+      return 
+    break;
+    case "UPDATE_TASK":
+      //here update task event
+    break;
+  }
+}
