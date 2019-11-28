@@ -2,7 +2,7 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   box-sizing: border-box; }
 
-#map {
+#map, #map2 {
   height: 500px;
   width: 100%; }
 

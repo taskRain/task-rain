@@ -1,5 +1,16 @@
 <h1>Detail</h1>
 
+xxxxx{{coordsLat}}xxxxx
+xxxxx{{coordsLng}}xxxxx
+
 <p>{{task.name}}</p>
 <p>{{task.description}}</p>
 <p><a href="/tasks/location/{{task.location._id}}/{{task._id}}">Location</a></p>
+
+<div id="map2"></div>
+
+<script type="text/javascript" src="/javascripts/detail-map.js"></script>
+
+<script>
+  startMap("map2",  { lat: {{ coordsLat }}, lng: {{ coordsLng }}, }, false);
+</script>

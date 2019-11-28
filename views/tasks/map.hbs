@@ -4,15 +4,27 @@ xxxx{{coordsLng}}xxxxx
 {{!-- {{task}} --}}
 
 <a href="/tasks/location">Update</a>
-<h3>My First Map</h3>
+
+<h3>Task map</h3>
+
+<input type="text" id="lat" value="">
+<input type="text" id="lng" value="">
+
 <div id="map"></div>
 
-{{!-- <input type="hidden" name="long" value="{{coordinates[0]}}">
-<input type="hidden" name="lat" value="{{coordinates[1]}}">  --}}
+
+<script type="text/javascript" src="/javascripts/detail-map.js"></script>
 
 <script>
-
-  window.mapCoordinates = { lat: {{coordsLat}}, lng: {{coordsLng}}  }
+  axios({
+  method: "GET",
+  url: "location",
+  {{!-- params: "URL parameters to be sent with the request" --}}
+})
+  .then(response => {
+    startMap("map",  { lat: {{ coordsLat }}, lng: {{ coordsLng }} }, true);
+  })
+  .catch(err => {
+    console.log('err');
+  });
 </script>
-
-<script type="text/javascript" src="/javascripts/task-map.js"></script>
