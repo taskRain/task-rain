@@ -117,7 +117,25 @@ document.getElementById("new-task").addEventListener("click", e => {
   let asideButton = document.querySelector('.task-create input[type="submit"]');
   asideButton.value = `Create Task`;
   asideButton.removeEventListener("click");
-  asideButton.addEventListener("click",  );
+  asideButton.addEventListener("click",  e => {
+    e && e.preventDefault();
+    document.querySelector(".task-create").classList.toggle("hide");
+
+    let payload = { location: jobLocationId, jobId: window.jobId };
+
+    taskFormGroup.forEach(field => {
+      payload[field[0]] = document.querySelector(field[1]).value;
+    });
+
+    axios({
+      method: "post",
+      url: "/planner/create/task",
+      data: payload,
+      config: { headers: { "Content-Type": "multipart/form-data" } }
+    }).then(() => {
+      renderTaskList(window.jobId);
+    });
+  });
 });
 
 function getButtonBehaviour(behaviour){
