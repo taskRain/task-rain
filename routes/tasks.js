@@ -49,7 +49,7 @@ router.get(
   ensureLogin.ensureLoggedIn("/auth/login"),
   (req, res, next) => {
     Locations.findById(req.params.locId).then(location => {
-      res.render("tasks/map", { location: location, task: req.params.taskId });
+      res.render("tasks/map", { location: location, task: req.params.taskId, apiKey: process.env.MAPS_API_KEY });
     });
   }
 );
