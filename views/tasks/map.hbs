@@ -1,6 +1,30 @@
-<h1>Map</h1>
+<!-- index.html -->
 
-{{location}}
-{{task}}
+<!DOCTYPE html>
+<html>
 
-<a href="/tasks/location">Update</a>
+<head>
+  <title>My First Map</title>
+  <style>
+    #map {
+      height: 500px;
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+
+  {{location}}
+  {{task}}
+
+  <a href="/tasks/location">Update</a>
+  <h3>My First Map</h3>
+  <div id="map"></div>
+
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYzIx1Euvjmtg1SkCTsLattONpmAGKST0"></script>
+  <script type="text/javascript" src="/javascripts/task-map.js"></script>
+
+</body>
+
+</html>

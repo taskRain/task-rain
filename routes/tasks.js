@@ -80,6 +80,7 @@ router.get(
   "/confirm/:id",
   ensureLogin.ensureLoggedIn("/auth/login"),
   (req, res, next) => {
+    console.log('This is the id');
     console.log(req.params.id);
     res.render("tasks/confirm", { taskId: req.params.id });
   }
@@ -100,9 +101,8 @@ router.put(
   (req, res, next) => {
     Tasks.findByIdAndUpdate(req.body._id, {
       status: "COMPLETED"
-    }).then((response) => {
+    }).then(() => {
       res.redirect("task/");
-      // res.json(response)
     });
   }
 );
