@@ -101,8 +101,9 @@ router.put(
   (req, res, next) => {
     Tasks.findByIdAndUpdate(req.body._id, {
       status: "COMPLETED"
-    }).then(() => {
-      res.redirect("task/");
+    }).then((response) => {
+      // console.log('updated');
+      res.json(response);
     });
   }
 );
