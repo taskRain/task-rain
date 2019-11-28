@@ -33,7 +33,7 @@ router.get(
     Tasks.findById(req.params.id)
       .populate("location")
       .then(task => {
-        res.render("tasks/detail", { task: task });
+        res.render("tasks/detail", { task: task , coordsLat: task.location.location.coordinates[0], coordsLng: task.location.location.coordinates[1],  apiKey: process.env.MAPS_API_KEY });
         console.log(task);
       })
       .catch(error => {
