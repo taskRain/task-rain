@@ -28,4 +28,11 @@ router.get(
   }
 );
 
+router.get("/job/:id", checkBoss, (req, res, next) => {
+  Job.find({_id: req.params.id})
+    .populate("creator")
+    .populate("location")
+    .populate("tasks")
+    .then(payload => res.json(payload));
+});
 module.exports = router;
