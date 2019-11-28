@@ -49,7 +49,8 @@ router.get(
   ensureLogin.ensureLoggedIn("/auth/login"),
   (req, res, next) => {
     Locations.findById(req.params.locId).then(location => {
-      res.render("tasks/map", { location: location, task: req.params.taskId, apiKey: process.env.MAPS_API_KEY });
+      console.log(location);
+      res.render("tasks/map", { coordsLat: location.location.coordinates[0], coordsLng: location.location.coordinates[1], location: location, task: req.params.taskId, apiKey: process.env.MAPS_API_KEY });
     });
   }
 );
@@ -67,8 +68,8 @@ router.put(
         type: "Point",
         coordinates: [+req.body.lng, +req.body.lat]
       }
-    }).then(() => {
-      res.redirect(`/tasks/detail/${req.body.taskId}`);
+    }).then((response) => {
+      res.json(response);
     });
   }
 );
