@@ -29,18 +29,17 @@ router.get("/create/job", checkBoss, (req, res, next) => {
     start_date: new Date(),
     end_date: new Date()
   }).then(createdJob => {
-    res.redirect("/planner/create/job/" + createdJob._id)
-  })
-
+    res.redirect("/planner/create/job/" + createdJob._id);
+  });
 });
 
 router.get("/create/job/:id", (req, res) => {
-  User.find().then(users =>{
+  User.find().then(users => {
     Job.findById(req.params.id).then(job => {
-      res.render("../views/planner/create-job", {job, users});
-    })
-  })
-})
+      res.render("../views/planner/create-job", { job, users });
+    });
+  });
+});
 
 router.get("/create/task", checkBoss, (req, res, next) => {
   User.find().then(users =>
@@ -49,20 +48,24 @@ router.get("/create/task", checkBoss, (req, res, next) => {
 });
 
 router.post("/create/task", checkBoss, (req, res, next) => {
-  let newTask = new SessionTask();
-  newTask.creator = req.session.job.creator;
-  let taskArrLen = req.session.job.tasks.length;
-  if (taskArrLen) {
-    newTask.arrPos = req.session.job.tasks[taskArrLen - 1].arrPos + 1;
-  }
-  let task = { ...newTask, ...req.body };
-  req.session.job.tasks.push(task);
-  res.redirect("/planner/create/job");
+  let newTaskInfo = null;
+  let newTask = { ...req.body };
+  newTask.creator = req.user._id;
+  Task.create(newTask).then(result => {
+    newTaskInfo = result;
+    Job.findByIdAndUpdate(req.body.jobId, {
+      $push: { tasks: result._id }
+    }).then(() => {
+      res.json(newTaskInfo);
+    });
+  });
 });
 
-router.delete("/delete/task", checkBoss, (req, res, next) => {
-  req.session.job.tasks.splice(req.query.idx, 1);
-  res.redirect("/create/job");
+router.delete("/delete/task/", checkBoss, (req, res, next) => {
+  console.log(req.body);
+  Job.findByIdAndUpdate(req.body.jobId, {
+    $pull: { tasks: req.body.taskId }
+  }).then(result => res.json(result));
 });
 
 router.get("/update/task", (req, res, next) => {
@@ -82,18 +85,18 @@ router.put("/update/task", (req, res, next) => {
 // pinta la vista update-job con los datos obtenidos al interrogar a
 // la base de datos con el req.param.id
 router.get("/update/job/:id", (req, res, next) => {
-  Job.findById(req.params.id)
-  .then(job => {
-  res.render("../views/planner/update-job", {job: job})})
+  Job.findById(req.params.id).then(job => {
+    res.render("../views/planner/update-job", { job: job });
+  });
 });
 
 // endpoint: "/update/job" put
 // actualiza la base de datos con los datos del formulario
 // después te redirecciona a "/"
 
-router.put("/update/job",(req, res, next) => {
+router.put("/update/job", (req, res, next) => {
   res.json(req.body);
-})
+});
 
 // endpoint: "/delete/job" delete
 // elimina todas las tasks que pertenecen a este trabajo
