@@ -30,6 +30,7 @@ router.get(
   "/detail/:id",
   ensureLogin.ensureLoggedIn("/auth/login"),
   (req, res, next) => {
+    console.log("tpm")
     Tasks.findById(req.params.id)
       .populate("location")
       .then(task => {
@@ -59,17 +60,17 @@ router.get(
 // actualiza la ubicación de la tarea en la base de datos.
 // En este caso no pinta redirige el marcador res.redirect "/detail"
 
-router.put(
+router.post(
   "/location",
   ensureLogin.ensureLoggedIn("/auth/login"),
   (req, res, next) => {
-    console.log(req.body);
-    Locations.findByIdAndUpdate(req.body.id, {
-      location: {
+    // console.log(req.body);
+    Locations.findByIdAndUpdate(
+      req.body.id,
+       {location: {
         type: "Point",
-        coordinates: [+req.body.lat, +req.body.lng]
-      }
-    }).then((response) => {
+        coordinates: [+req.body.lat, +req.body.lng]}},
+    ).then((response) => {
       res.json(response);
     });
   }
