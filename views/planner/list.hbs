@@ -1,23 +1,29 @@
-<nav>
-  <a href="create/job">Add new job</a>
-  <button>Will exceed end date</button>
-  <button>Closest end date</button>
-  <a href="/auth/logout">Logout</a>
-</nav>
-<ul>
-  {{#each joblist}}
-  <div>
-    <a href="update/job/{{_id}}">{{description}}</a>
-    <ul>
-      {{#each this.tasks}}
-      <li><a href="update/task/{{_id}}">
-          <div>
-            <h4>{{name}}</h4>
-            <p>{{operator.username}}</p>
-          </div>
-        </a></li>
-      {{/each}}
-    </ul>
-  </div>
-  {{/each}}
-</ul>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Job Status</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+  <link rel="stylesheet" href="https://meyerweb.com/eric/tools/css/reset/reset.css">
+  <link rel="stylesheet" href="/stylesheets/style-list.css" />
+</head>
+
+<body>
+  <nav>
+    <a href="create/job">Add new job</a>
+    <button>Will exceed end date</button>
+    <button>Closest end date</button>
+    <a href="/auth/logout">Logout</a>
+  </nav>
+  <ul id="jobs-wrapper">
+  </ul>
+  <script>
+    window.userId = `{{userId}}`;
+  </script>
+  <script src="/javascripts/job-list.js"></script>
+</body>
+
+</html>

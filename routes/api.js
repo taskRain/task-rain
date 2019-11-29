@@ -13,6 +13,12 @@ router.get("/jobs/:id", checkBoss, (req, res, next) => {
     .find({ creator: { _id: req.params.id } })
     .populate("location")
     .populate("tasks")
+    .populate({
+      path : 'tasks',
+      populate : {
+        path : 'operator'
+      }
+    })
     .then(payload => res.json(payload));
 });
 

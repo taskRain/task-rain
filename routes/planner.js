@@ -9,17 +9,7 @@ const checkBoss = require("../passport/roles");
 const moment = require("moment");
 
 router.get("/", checkBoss, (req, res, next) => {
-  Job.find()
-    .populate("creator")
-    .find({ creator: { _id: req.user._id } })
-    .populate("tasks")
-    .populate({
-      path: "tasks",
-      populate: { path: "operator" }
-    })
-    .then(joblist =>
-      res.render("../views/planner/list.hbs", { layout: false, joblist })
-    );
+  res.render("../views/planner/list.hbs", { layout: false, userId: req.user._id })
 });
 
 router.get("/create/job", checkBoss, (req, res, next) => {

@@ -91,13 +91,49 @@ button, input[type="submit"] {
 
 .tasks {
   background: salmon;
-  padding: 2rem;
-  margin-bottom: 1rem; }
+  padding: 1rem;
+  margin-bottom: 1rem;
+  margin-left: 5rem;
+  width: 30vw;
+  border: 3px solid brown;
+  border-radius: 1rem; }
 
 a {
-  text-decoration: none; }
+  text-decoration: none;
+  font-size: 1.2rem;
+  color: white; }
 
-.operator-title {
-  margin-bottom: 4rem; }
+#tasks-title {
+  margin: 2rem 5rem;
+  font-size: 3rem;
+  font-weight: bold; }
+
+.finished-button {
+  color: #c9c911;
+  margin-left: 9rem; }
+
+#detail-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 1.5rem 5rem; }
+
+#map2 {
+  height: 50vh;
+  width: 50vh;
+  margin: 1rem 5rem; }
+
+.detail-paragraph {
+  margin: 1rem 5rem; }
+
+#detail-container {
+  margin: 1rem 5rem;
+  background: salmon;
+  padding: 1rem;
+  width: 80vw;
+  border: 3px solid brown;
+  border-radius: 1rem; }
+
+#detail-link {
+  margin: 1rem 5rem; }
 
 /*# sourceMappingURL=style.css.map */
