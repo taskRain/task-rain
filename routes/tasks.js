@@ -50,7 +50,7 @@ router.get(
   (req, res, next) => {
     Locations.findById(req.params.locId).then(location => {
       console.log(location);
-      res.render("tasks/map", { coordsLat: location.location.coordinates[0], coordsLng: location.location.coordinates[1], location: location, task: req.params.taskId, apiKey: process.env.MAPS_API_KEY });
+      res.render("tasks/map", { coordsLat: location.location.coordinates[0], coordsLng: location.location.coordinates[1], locationId: location.id, task: req.params.taskId, apiKey: process.env.MAPS_API_KEY });
     });
   }
 );
@@ -63,10 +63,11 @@ router.put(
   "/location",
   ensureLogin.ensureLoggedIn("/auth/login"),
   (req, res, next) => {
-    Locations.findByIdAndUpdate(req.body._id, {
+    console.log(req.body);
+    Locations.findByIdAndUpdate(req.body.id, {
       location: {
         type: "Point",
-        coordinates: [+req.body.lng, +req.body.lat]
+        coordinates: [+req.body.lat, +req.body.lng]
       }
     }).then((response) => {
       res.json(response);
