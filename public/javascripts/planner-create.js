@@ -2,8 +2,7 @@ let taskFormGroup = [
   ["name", "#task-name"],
   ["description", "#task-description"],
   ["materials", "#task-materials"],
-  ["duration", "#task-duration"],
-  ["operator", "#task-operator"]
+  ["duration", "#task-duration"]
 ];
 let jobFormGroup = [
   ["description", "#job-description"],
@@ -62,7 +61,6 @@ function getButtonBehaviour(behaviour) {
         taskFormGroup.forEach(field => {
           payload[field[0]] = document.querySelector(field[1]).value;
         });
-
         axios({
           method: "put",
           url: "/planner/update/task",

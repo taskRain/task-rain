@@ -42,6 +42,20 @@ router.get("/create/job/:id", (req, res) => {
   });
 });
 
+router.get("/update/job/:id", (req, res, next) => {
+  User.find().then(users => {
+    Job.findById(req.params.id).then(job => {
+      res.render("../views/planner/create-job", {
+        job,
+        users,
+        apiKey: process.env.MAPS_API_KEY, 
+        dateS: moment(job.start_date).format("YYYY-MM-DD"),
+        dateE: moment(job.end_date).format("YYYY-MM-DD")
+      });
+    });
+  });
+});
+
 router.get("/create/task", checkBoss, (req, res, next) => {
   User.find().then(users =>
     res.render("../views/planner/create-task", { users })
@@ -85,16 +99,6 @@ router.put("/update/task", (req, res, next) => {
     ocation: req.body.location,
     operator: req.body.operator
   }).then(result => res.json(result));
-});
-
-router.get("/update/job/:id", (req, res, next) => {
-  Job.findById(req.params.id).then(job => {
-    res.render("../views/planner/create-job", {
-      job,
-      dateS: moment(job.start_date).format("YYYY-MM-DD"),
-      dateE: moment(job.end_date).format("YYYY-MM-DD")
-    });
-  });
 });
 
 router.put("/update/job", (req, res, next) => {
