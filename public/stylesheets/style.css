@@ -54,7 +54,8 @@ section.job-create {
   width: 35vw; }
 
 .map-wrapper {
-  width: 65vw; }
+  height: 30vw;
+  width: 60vw; }
 
 .field input {
   padding: 20px; }

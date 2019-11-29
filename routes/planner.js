@@ -37,7 +37,7 @@ router.get("/create/job", checkBoss, (req, res, next) => {
 router.get("/create/job/:id", (req, res) => {
   User.find().then(users => {
     Job.findById(req.params.id).then(job => {
-      res.render("../views/planner/create-job", { job, users });
+      res.render("../views/planner/create-job", { job, users, apiKey: process.env.MAPS_API_KEY  });
     });
   });
 });
