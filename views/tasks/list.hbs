@@ -1,11 +1,12 @@
-<h1>List</h1>
+<h1 class="operator-title">List</h1>
 
 {{#each tasks}}
-
-<p><a href="/tasks/detail/{{_id}}">{{name}}</a>
-{{#unless flag}}
-<a href="/tasks/confirm/{{_id}}">Finished</a>
-{{/unless}}
-</p>
+<div class="tasks">
+  <p><a href="/tasks/detail/{{_id}}">{{name}}</a>
+    {{#unless flag}}
+    <a href="/tasks/confirm/{{_id}}">Finished</a>
+    {{/unless}}
+  </p>
+</div>
 
 {{/each}}
