@@ -2,16 +2,18 @@ let taskFormGroup = [
   ["name", "#task-name"],
   ["description", "#task-description"],
   ["materials", "#task-materials"],
-  ["duration", "#task-duration"]
+  ["duration", "#task-duration"],
 ];
 let jobFormGroup = [
   ["description", "#job-description"],
   ["start_date", "#job-start-date"],
-  ["end_date", "#job-end-date"]
+  ["end_date", "#job-end-date"],
+  ["lat","#lat"],
+  ["lng","#lng"]
 ];
 
 let taskList = document.querySelector(".task-container");
-let jobLocationId = "5ddf968a12287222a0efdbcf";
+let jobLocationId = window.job.location;
 let hackTask = null;
 
 function clearForm(formTupla) {
@@ -22,7 +24,6 @@ function clearForm(formTupla) {
 
 function autoFillForm(formTupla, payload) {
   formTupla.forEach(field => {
-    console.log(payload[field[0]]);
     document.querySelector(field[1]).value = payload[field[0]];
   });
 }
@@ -34,11 +35,12 @@ function getButtonBehaviour(behaviour) {
         e && e.preventDefault();
         document.querySelector(".task-create").classList.toggle("hide");
 
-        let payload = { location: jobLocationId, jobId: window.jobId };
+        let payload = { location: jobLocationId, jobId: window.jobId, operator: document.querySelector("#task-operator").value };
 
         taskFormGroup.forEach(field => {
           payload[field[0]] = document.querySelector(field[1]).value;
         });
+        console.log(payload);
         axios({
           method: "post",
           url: "/planner/create/task",
@@ -56,11 +58,14 @@ function getButtonBehaviour(behaviour) {
         let payload = {
           location: jobLocationId,
           jobId: window.jobId,
-          taskId: hackTask
+          taskId: hackTask,
+          operator: document.querySelector("#task-operator").value
         };
+
         taskFormGroup.forEach(field => {
           payload[field[0]] = document.querySelector(field[1]).value;
         });
+        console.log(payload);
         axios({
           method: "put",
           url: "/planner/update/task",
@@ -81,7 +86,6 @@ function getButtonBehaviour(behaviour) {
         jobFormGroup.forEach(field => {
           payload[field[0]] = document.querySelector(field[1]).value;
         });
-
         axios({
           method: "put",
           url: "/planner/update/job",

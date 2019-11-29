@@ -89,4 +89,15 @@ button, input[type="submit"] {
 .task-btns button {
   background: burlywood; }
 
+.tasks {
+  background: salmon;
+  padding: 2rem;
+  margin-bottom: 1rem; }
+
+a {
+  text-decoration: none; }
+
+.operator-title {
+  margin-bottom: 4rem; }
+
 /*# sourceMappingURL=style.css.map */

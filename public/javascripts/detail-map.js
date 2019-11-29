@@ -5,7 +5,7 @@ let coordLong = undefined;
 function startMap(mapID, taskLocation, drag) {
   //Initialize the map
   const map = new google.maps.Map(document.getElementById(mapID), {
-    zoom: 5,
+    zoom: 10,
     center: taskLocation
   });
 

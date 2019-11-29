@@ -9,7 +9,6 @@ const checkBoss = require("../passport/roles");
 const moment = require("moment");
 
 router.get("/", checkBoss, (req, res, next) => {
-  delete req.session.job;
   Job.find()
     .populate("creator")
     .find({ creator: { _id: req.user._id } })
@@ -24,20 +23,32 @@ router.get("/", checkBoss, (req, res, next) => {
 });
 
 router.get("/create/job", checkBoss, (req, res, next) => {
-  Job.create({
-    creator: req.user._id,
-    description: "dummy text",
-    start_date: new Date(),
-    end_date: new Date()
-  }).then(createdJob => {
-    res.redirect("/planner/create/job/" + createdJob._id);
+  Location.create({
+    location: {
+      type: "Point",
+      coordinates: [40.387493, -3.691193]
+    }
+  }).then(location => {
+    Job.create({
+      creator: req.user._id,
+      description: "",
+      start_date: new Date(),
+      end_date: new Date(),
+      location: location._id
+    }).then(createdJob => {
+      res.redirect("/planner/create/job/" + createdJob._id);
+    });
   });
 });
 
 router.get("/create/job/:id", (req, res) => {
   User.find().then(users => {
     Job.findById(req.params.id).then(job => {
-      res.render("../views/planner/create-job", { job, users, apiKey: process.env.MAPS_API_KEY  });
+      res.render("../views/planner/create-job", {
+        job,
+        users,
+        apiKey: process.env.MAPS_API_KEY
+      });
     });
   });
 });
@@ -48,18 +59,12 @@ router.get("/update/job/:id", (req, res, next) => {
       res.render("../views/planner/create-job", {
         job,
         users,
-        apiKey: process.env.MAPS_API_KEY, 
+        apiKey: process.env.MAPS_API_KEY,
         dateS: moment(job.start_date).format("YYYY-MM-DD"),
         dateE: moment(job.end_date).format("YYYY-MM-DD")
       });
     });
   });
-});
-
-router.get("/create/task", checkBoss, (req, res, next) => {
-  User.find().then(users =>
-    res.render("../views/planner/create-task", { users })
-  );
 });
 
 router.post("/create/task", checkBoss, (req, res, next) => {
@@ -83,14 +88,8 @@ router.delete("/delete/task/", checkBoss, (req, res, next) => {
   }).then(result => res.json(result));
 });
 
-router.get("/update/task", (req, res, next) => {
-  res.render(
-    "../views/planner/update-task.hbs",
-    req.session.job.tasks[req.query.idx]
-  );
-});
-
 router.put("/update/task", (req, res, next) => {
+  console.log(req.body.operator)
   Task.findByIdAndUpdate(req.body.taskId, {
     name: req.body.name,
     description: req.body.description,
@@ -106,7 +105,14 @@ router.put("/update/job", (req, res, next) => {
     description: req.body.description,
     start_date: req.body.start_date,
     end_date: req.body.end_date
-  }).then(result => res.json(result));
+  }).then(result => {
+    Location.findByIdAndUpdate(req.body.location, {
+      location: {
+        type: "Point",
+        coordinates: [+req.body.lat, +req.body.lng]
+      }
+    }).then(result => res.json(result)) 
+  });
 });
 
 router.get("/task/", (req, res, next) => {

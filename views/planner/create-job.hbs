@@ -32,7 +32,7 @@
     <div class="text-wrapper">
       <div class="field top">
         <label for="job-description">Job name: </label>
-        <input id= "job-description" type="text" name="description" value="{{job.description}}" placeholder="name">
+        <input id="job-description" type="text" name="description" value="{{job.description}}" placeholder="name">
       </div>
       <div class="field left">
         <div>
@@ -45,7 +45,7 @@
         </div>
       </div>
     </div>
-    <ul class="task-container">  
+    <ul class="task-container">
     </ul>
     <a id="new-task" href="">Add task</a>
     <div class="form-buttons">
@@ -55,6 +55,9 @@
   </form>
   <div class="map-wrapper" id="map3">
   </div>
+  <input id="lat" type="hidden">
+  <input id="lng" type="hidden">
+
 </section>
 <script>
   window.jobId = `{{job._id}}`;
@@ -62,9 +65,10 @@
   window.job.description = `{{job.description}}`
   window.job.start_date = new Date(`{{job.start_date}}`)
   window.job.end_date = `{{job.end_date}}`
+  window.job.location = `{{job.location}}`
 </script>
 <script type="text/javascript" src="/javascripts/detail-map.js"></script>
 <script>
-  startMap("map3",  { lat: 40, lng: -3}, true);
+  startMap("map3", { lat: 40, lng: -3 }, true);
 </script>
 <script src="/javascripts/planner-create.js"></script>
