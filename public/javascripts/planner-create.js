@@ -90,8 +90,21 @@ function getButtonBehaviour(behaviour) {
           data: payload,
           config: { headers: { "Content-Type": "multipart/form-data" } }
         }).then(result => {
-          console.log(result);
+          window.location.pathname = `planner/`;
         });
+      };
+      break;
+    case "CANCEL_TASK":
+      return e => {
+        e && e.preventDefault();
+        document.querySelector(".task-create").classList.toggle("hide");
+        clearForm(taskFormGroup);
+      };
+      break;
+      case "CANCEL_JOB":
+      return e => {
+        e && e.preventDefault();
+        window.location.pathname = `planner/`;
       };
       break;
   }
@@ -100,6 +113,8 @@ function getButtonBehaviour(behaviour) {
 let setCreateTaskBehav = getButtonBehaviour("CREATE_TASK");
 let setUpdateTaskBehav = getButtonBehaviour("UPDATE_TASK");
 let setUpdateJobBehav = getButtonBehaviour("UPDATE_JOB");
+let setTaskCancelBehav = getButtonBehaviour("CANCEL_TASK")
+let setJobCancelBehav = getButtonBehaviour("CANCEL_JOB");
 
 function renderTaskList(id) {
   axios({
@@ -181,5 +196,9 @@ document.querySelector("#new-task").addEventListener("click", e => {
 document
   .querySelector(`.job-create input[type="submit"]`)
   .addEventListener("click", setUpdateJobBehav);
+
+document.querySelector(".task-cancel").addEventListener("click", setTaskCancelBehav);
+
+document.querySelector(".job-cancel").addEventListener("click", setJobCancelBehav);
 
 renderTaskList(window.jobId);

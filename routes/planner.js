@@ -98,8 +98,11 @@ router.get("/update/job/:id", (req, res, next) => {
 });
 
 router.put("/update/job", (req, res, next) => {
-  console.log(req.body.data)
-  res.json(req.body);
+  Job.findByIdAndUpdate(req.body.jobId, {
+    description: req.body.description,
+    start_date: req.body.start_date,
+    end_date: req.body.end_date
+  }).then(result => res.json(result));
 });
 
 router.get("/task/", (req, res, next) => {
