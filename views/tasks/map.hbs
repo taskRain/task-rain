@@ -1,14 +1,18 @@
 xxxx{{coordsLat}}xxxxx
-
 xxxx{{coordsLng}}xxxxx
-{{!-- {{task}} --}}
+xxxxx{{locationId}}xxxxx
+xxxxx{{task}}xxxxx
 
 <a href="/tasks/location">Update</a>
 
 <h3>Task map</h3>
 
-<input type="text" id="lat" value="">
-<input type="text" id="lng" value="">
+<input type="hidden" id="taskId" value="{{task}}">
+<input type="hidden" id="locationId" value="{{locationId}}">
+<input type="text" id="lat" value="{{coordsLat}}">
+<input type="text" id="lng" value="{{coordsLng}}">
+
+<button id="updateButton">Actualizar localización</button>
 
 <div id="map"></div>
 
@@ -28,3 +32,5 @@ xxxx{{coordsLng}}xxxxx
     console.log('err');
   });
 </script>
+
+<script src="/javascripts/location-update.js"></script>
