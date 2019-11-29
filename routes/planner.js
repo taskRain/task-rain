@@ -6,6 +6,7 @@ const Task = require("../models/Task");
 const Job = require("../models/Job");
 const ensureLogin = require("connect-ensure-login");
 const checkBoss = require("../passport/roles");
+const moment = require("moment");
 
 router.get("/", checkBoss, (req, res, next) => {
   delete req.session.job;
@@ -76,23 +77,28 @@ router.get("/update/task", (req, res, next) => {
 });
 
 router.put("/update/task", (req, res, next) => {
-  Task.findByIdAndUpdate(req.body.taskId,{
-      name: req.body.name,
-      description: req.body.description,
-      materials: req.body.materials,
-      duration: req.body.duration,
-      ocation: req.body.location,
-      operator: req.body.operator
-  }).then(result => res.json(result))
+  Task.findByIdAndUpdate(req.body.taskId, {
+    name: req.body.name,
+    description: req.body.description,
+    materials: req.body.materials,
+    duration: req.body.duration,
+    ocation: req.body.location,
+    operator: req.body.operator
+  }).then(result => res.json(result));
 });
 
 router.get("/update/job/:id", (req, res, next) => {
   Job.findById(req.params.id).then(job => {
-    res.render("../views/planner/update-job", { job: job });
+    res.render("../views/planner/create-job", {
+      job,
+      dateS: moment(job.start_date).format("YYYY-MM-DD"),
+      dateE: moment(job.end_date).format("YYYY-MM-DD")
+    });
   });
 });
 
 router.put("/update/job", (req, res, next) => {
+  console.log(req.body.data)
   res.json(req.body);
 });
 

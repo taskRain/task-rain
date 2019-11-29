@@ -28,20 +28,20 @@
   </form>
 </aside>
 <section class="job-create">
-  <form action="/planner/create/job/{{job._id}}" method="post">
+  <form action="/planner/update/job" method="post">
     <div class="text-wrapper">
       <div class="field top">
         <label for="job-description">Job name: </label>
-        <input id= "job-description" type="text" name="description" placeholder="name">
+        <input id= "job-description" type="text" name="description" value="{{job.description}}" placeholder="name">
       </div>
       <div class="field left">
         <div>
           <label for="job-start-date">Start date:</label>
-          <input id="job-start-date" type="date" name="start-date">
+          <input id="job-start-date" type="date" name="start-date" value="{{dateS}}">
         </div>
         <div>
           <label for="job-end-date">End date:</label>
-          <input id="job-end-date" type="date" name="end-date">
+          <input id="job-end-date" type="date" name="end-date" value="{{dateE}}">
         </div>
         {{!-- <input type="hidden"> --}}
       </div>
@@ -51,7 +51,7 @@
     <a id="new-task" href="">Add task</a>
     <div class="form-buttons">
       <a href="/"><button>Cancel</button></a>
-      <input type="submit" value="Create Job">
+      <input type="submit" value="Save Job">
     </div>
   </form>
   <div class="map-wrapper">
@@ -60,5 +60,9 @@
 </section>
 <script>
   window.jobId = `{{job._id}}`;
+  window.job = {};
+  window.job.description = `{{job.description}}`
+  window.job.start_date = new Date(`{{job.start_date}}`)
+  window.job.end_date = `{{job.end_date}}`
 </script>
 <script src="/javascripts/planner-create.js"></script>

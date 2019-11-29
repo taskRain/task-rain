@@ -5,12 +5,15 @@ let taskFormGroup = [
   ["duration", "#task-duration"],
   ["operator", "#task-operator"]
 ];
+let jobFormGroup = [
+  ["description", "#job-description"],
+  ["start_date", "#job-start-date"],
+  ["end_date", "#job-end-date"]
+];
 
 let taskList = document.querySelector(".task-container");
 let jobLocationId = "5ddf968a12287222a0efdbcf";
 let hackTask = null;
-
-renderTaskList(window.jobId);
 
 function clearForm(formTupla) {
   formTupla.forEach(field => {
@@ -20,9 +23,83 @@ function clearForm(formTupla) {
 
 function autoFillForm(formTupla, payload) {
   formTupla.forEach(field => {
+    console.log(payload[field[0]]);
     document.querySelector(field[1]).value = payload[field[0]];
   });
 }
+
+function getButtonBehaviour(behaviour) {
+  switch (behaviour) {
+    case "CREATE_TASK":
+      return e => {
+        e && e.preventDefault();
+        document.querySelector(".task-create").classList.toggle("hide");
+
+        let payload = { location: jobLocationId, jobId: window.jobId };
+
+        taskFormGroup.forEach(field => {
+          payload[field[0]] = document.querySelector(field[1]).value;
+        });
+        axios({
+          method: "post",
+          url: "/planner/create/task",
+          data: payload,
+          config: { headers: { "Content-Type": "multipart/form-data" } }
+        }).then(() => {
+          renderTaskList(window.jobId);
+        });
+      };
+      break;
+    case "UPDATE_TASK":
+      return e => {
+        e && e.preventDefault();
+        document.querySelector(".task-create").classList.toggle("hide");
+        let payload = {
+          location: jobLocationId,
+          jobId: window.jobId,
+          taskId: hackTask
+        };
+        taskFormGroup.forEach(field => {
+          payload[field[0]] = document.querySelector(field[1]).value;
+        });
+
+        axios({
+          method: "put",
+          url: "/planner/update/task",
+          data: payload,
+          config: { headers: { "Content-Type": "multipart/form-data" } }
+        }).then(() => {
+          renderTaskList(window.jobId);
+        });
+      };
+      break;
+    case "UPDATE_JOB":
+      return e => {
+        e && e.preventDefault();
+        let payload = {
+          location: jobLocationId,
+          jobId: window.jobId
+        };
+        jobFormGroup.forEach(field => {
+          payload[field[0]] = document.querySelector(field[1]).value;
+        });
+
+        axios({
+          method: "put",
+          url: "/planner/update/job",
+          data: payload,
+          config: { headers: { "Content-Type": "multipart/form-data" } }
+        }).then(result => {
+          console.log(result);
+        });
+      };
+      break;
+  }
+}
+
+let setCreateTaskBehav = getButtonBehaviour("CREATE_TASK");
+let setUpdateTaskBehav = getButtonBehaviour("UPDATE_TASK");
+let setUpdateJobBehav = getButtonBehaviour("UPDATE_JOB");
 
 function renderTaskList(id) {
   axios({
@@ -68,9 +145,9 @@ function renderTaskList(id) {
         asideButton.value = `Update Task`;
         asideButton.removeEventListener("click", setCreateTaskBehav);
         asideButton.addEventListener("click", setUpdateTaskBehav);
-        });
+      });
 
-        deleteDOMEL.addEventListener("click", e => {
+      deleteDOMEL.addEventListener("click", e => {
         e && e.preventDefault();
         axios({
           method: "delete",
@@ -91,64 +168,18 @@ function renderTaskList(id) {
   });
 }
 
-
-document.getElementById("new-task").addEventListener("click", e => {
+document.querySelector("#new-task").addEventListener("click", e => {
   e && e.preventDefault();
   clearForm(taskFormGroup);
   document.querySelector(".task-create").classList.toggle("hide");
   let asideButton = document.querySelector('.task-create input[type="submit"]');
   asideButton.value = `Create Task`;
   asideButton.removeEventListener("click", setUpdateTaskBehav);
-  asideButton.addEventListener("click",  setCreateTaskBehav);
+  asideButton.addEventListener("click", setCreateTaskBehav);
 });
 
-function getButtonBehaviour(behaviour){
-  switch (behaviour) {
-    case "CREATE_TASK":
-      return (e) => {
-        e && e.preventDefault();
-        document.querySelector(".task-create").classList.toggle("hide");
-    
-        let payload = { location: jobLocationId, jobId: window.jobId };
-    
-        taskFormGroup.forEach(field => {
-          payload[field[0]] = document.querySelector(field[1]).value;
-        });
-        axios({
-          method: "post",
-          url: "/planner/create/task",
-          data: payload,
-          config: { headers: { "Content-Type": "multipart/form-data" } }
-        }).then(() => {
-          renderTaskList(window.jobId);
-        });
-      }
-    break;
-    case "UPDATE_TASK":
-      return (e) => {
-        e && e.preventDefault();
-        document.querySelector(".task-create").classList.toggle("hide");
-        let payload = {
-          location: jobLocationId,
-          jobId: window.jobId,
-          taskId: hackTask
-        };
-        taskFormGroup.forEach(field => {
-          payload[field[0]] = document.querySelector(field[1]).value;
-        });
+document
+  .querySelector(`.job-create input[type="submit"]`)
+  .addEventListener("click", setUpdateJobBehav);
 
-        axios({
-          method: "put",
-          url: "/planner/update/task",
-          data: payload,
-          config: { headers: { "Content-Type": "multipart/form-data" } }
-        }).then(() => {
-          renderTaskList(window.jobId);
-        });
-      }
-    break;
-  }
-}
-
-let setCreateTaskBehav = getButtonBehaviour("CREATE_TASK");
-let setUpdateTaskBehav = getButtonBehaviour("UPDATE_TASK");
+renderTaskList(window.jobId);
