@@ -15,7 +15,6 @@ window.onload = e => {
       let taskList = document.createElement("ul");
       taskList.className = "job-grad";
       job.tasks.forEach(task => {
-        console.log(task.operator);
         let taskDOMEl = document.createElement("li");
         taskDOMEl.innerHTML = `<a href="update/job/${job._id}">
         <div class="task-box">
