@@ -1,13 +1,17 @@
-<h1>Detail</h1>
+<h1 id="detail-title">Detail</h1>
 
-xxxxx{{coordsLat}}xxxxx
-xxxxx{{coordsLng}}xxxxx
+{{!-- xxxxx{{coordsLat}}xxxxx
+xxxxx{{coordsLng}}xxxxx --}}
 
-<p>{{task.name}}</p>
-<p>{{task.description}}</p>
-<p><a href="/tasks/location/{{task.location._id}}/{{task._id}}">Location</a></p>
+<div id="detail-container">
+
+<p class="detail-paragraph">Name: {{task.name}}</p>
+<p class="detail-paragraph">Description: {{task.description}}</p>
+<p><a href="/tasks/location/{{task.location._id}}/{{task._id}}" id="detail-link">Location</a></p>
 
 <div id="map2"></div>
+
+</div>
 
 <script type="text/javascript" src="/javascripts/detail-map.js"></script>
 
