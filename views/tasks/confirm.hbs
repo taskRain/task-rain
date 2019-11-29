@@ -1,8 +1,14 @@
 {{!-- <p><a href="/tasks/confirm/ok">confirm</a></p> --}}
-<button type="submit" id="confirmButton">CONFIRM</button>
-<p><a href="/tasks/confirmCancel">return</a></p>
 
-{{taskId}}
+
+<div id="confirm-container">
+  <button type="submit" id="confirmButton">CONFIRM</button>
+  <div id="return-div"><a href="/tasks/confirmCancel" id="return-delete">Return</a></div>
+</div>
+
+
 <input id="hidden-input" type="hidden" value="{{taskId}}">
+
+
 
 <script src="/javascripts/task-confirm.js"></script>

@@ -2,9 +2,9 @@
 
 {{#each tasks}}
 <div class="tasks">
-  <p><a href="/tasks/detail/{{_id}}">{{name}}</a>
+  <p><a href="/tasks/detail/{{_id}}" class="list-link">{{name}}</a>
     {{#unless flag}}
-    <a href="/tasks/confirm/{{_id}}" class="finished-button">Finished</a>
+    <a href="/tasks/confirm/{{_id}}" class= "list-link finished-button">Finished</a>
     {{/unless}}
   </p>
 </div>

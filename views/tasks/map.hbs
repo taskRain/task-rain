@@ -1,18 +1,20 @@
-xxxx{{coordsLat}}xxxxx
+{{!-- xxxx{{coordsLat}}xxxxx
 xxxx{{coordsLng}}xxxxx
 xxxxx{{locationId}}xxxxx
-xxxxx{{task}}xxxxx
+xxxxx{{task}}xxxxx --}}
 
-<a href="/tasks/location">Update</a>
-
-<h3>Task map</h3>
+{{!-- <a href="/tasks/location">Update</a> --}}
 
 <input type="hidden" id="taskId" value="{{task}}">
 <input type="hidden" id="locationId" value="{{locationId}}">
-<input type="text" id="lat" value="{{coordsLat}}">
-<input type="text" id="lng" value="{{coordsLng}}">
 
-<button id="updateButton">Actualizar localización</button>
+<div id="over-the-map">
+  <div>
+    <input type="text" id="lat" value="{{coordsLat}}" class="map-input">
+    <input type="text" id="lng" value="{{coordsLng}}" class="map-input">
+  </div>
+  <button id="updateButton">Update location</button>
+</div>
 
 <div id="map"></div>
 
@@ -21,14 +23,14 @@ xxxxx{{task}}xxxxx
 
 <script>
   axios({
-  method: "GET",
-  url: "location",
+    method: "GET",
+    url: "location",
   {{!-- params: "URL parameters to be sent with the request" --}}
 })
-  .then(response => {
-    startMap("map",  { lat: {{ coordsLat }}, lng: {{ coordsLng }} }, true);
+    .then(response => {
+      startMap("map", { lat: {{ coordsLat }}, lng: {{ coordsLng }} }, true);
   })
-  .catch(err => {
+  .catch (err => {
     console.log('err');
   });
 </script>
