@@ -28,34 +28,4 @@ function startMap(mapID, taskLocation, drag) {
     coordLat = `${taskLocationMarker.getPosition().lat()}`;
     coordLong = `${taskLocationMarker.getPosition().lng()}`;
   })
-
-
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(
-      function() {
-        const user_location = {
-          lat: window.mapCoordinates.lat,
-          lng: window.mapCoordinates.lng
-        };
-
-        // Center map with user location
-        map.setCenter(user_location);
-
-        // Add a marker for your user location
-        const taskLocationMarker = new google.maps.Marker({
-          position: {
-            lat: window.mapCoordinates.lat,
-            lng: window.mapCoordinates.lng
-          },
-          map: map,
-          title: "You are here."
-        });
-      },
-      function() {
-        console.log("Error in the geolocation service.");
-      }
-    );
-  } else {
-    console.log("Browser does not support geolocation.");
-  }
 }
