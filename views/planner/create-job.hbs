@@ -43,7 +43,6 @@
           <label for="job-end-date">End date:</label>
           <input id="job-end-date" type="date" name="end-date" value="{{dateE}}">
         </div>
-        {{!-- <input type="hidden"> --}}
       </div>
     </div>
     <ul class="task-container">  
@@ -55,7 +54,6 @@
     </div>
   </form>
   <div class="map-wrapper" id="map3">
-    <h1>Imagine a map here</h1>
   </div>
 </section>
 <script>
@@ -65,8 +63,8 @@
   window.job.start_date = new Date(`{{job.start_date}}`)
   window.job.end_date = `{{job.end_date}}`
 </script>
-<script src="/javascripts/planner-create.js"></script>
 <script type="text/javascript" src="/javascripts/detail-map.js"></script>
 <script>
-  startMap("map3",  { lat: 40, lng: -3, }, false);
+  startMap("map3",  { lat: 40, lng: -3}, true);
 </script>
+<script src="/javascripts/planner-create.js"></script>
